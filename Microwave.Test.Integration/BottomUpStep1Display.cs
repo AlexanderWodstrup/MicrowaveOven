@@ -3,12 +3,8 @@
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    public class BottomUp_Step1
+    public class BottomUpStep1Display
     {
-        [SetUp]
-        public void Setup()
-        {
-
-        }
+        
     }
 }
