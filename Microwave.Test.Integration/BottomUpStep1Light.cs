@@ -21,8 +21,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void turnOnLightWorksCorrectly()
         {
-            sut.
-            sut.TurnOn();
+            
         }
     }
 }
