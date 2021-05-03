@@ -7,7 +7,7 @@ using NUnit.Framework.Internal;
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    public class BottomUpStep1Display
+    public class BottomUpStep2Display
     {
         private Display sut;
         private IOutput output;
