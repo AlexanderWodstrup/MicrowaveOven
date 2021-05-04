@@ -22,6 +22,7 @@ namespace Microwave.Test.Integration
         private Light light;
         private CookController cookController;
         private Output output;
+        //private IOutput output;
         private Timer timer;
         private PowerTube powerTube;
         private StringWriter stringWriter;
@@ -31,12 +32,13 @@ namespace Microwave.Test.Integration
         {
             stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
-            
+
             timeButton = new Button();
             powerButton = new Button();
             startCancelButton = new Button();
             door = new Door();
             output = new Output();
+            //output = Substitute.For<IOutput>();
             display = new Display(output);
             light = new Light(output);
             timer = new Timer();
@@ -49,14 +51,32 @@ namespace Microwave.Test.Integration
         [Test]
         public void LightIsTurnedOn()
         {
-            door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            //light.TurnOn();
+            door.Open();
+
+            //door.Opened += Raise.EventWith(this, EventArgs.Empty);
             Assert.That(stringWriter.ToString().Contains("turned on"));
         }
 
         [Test]
         public void LightIsTurnedOff()
         {
-            
+            door.Open();
+            door.Close();
+            //light.TurnOff();
+
+            //door.Closed += Raise.EventWith(this, EventArgs.Empty);
+            Assert.That(stringWriter.ToString().Contains("turned off"));
+        }
+
+        [TestCase(50)]
+        [TestCase(350)]
+        [TestCase(700)]
+        public void DoorOpenClose_Powered80W(int power)
+        {
+            powerTube.TurnOn(power);
+
+            Assert.That(stringWriter.ToString().Contains($"PowerTube works with {power}\r\n"));
         }
     }
 }
