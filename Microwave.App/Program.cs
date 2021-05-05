@@ -41,7 +41,7 @@ namespace Microwave.App
             }
             
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 timeButton.Press();
             }
@@ -50,7 +50,7 @@ namespace Microwave.App
             startCancelButton.Press();
             
             Console.WriteLine();
-            door.Open();
+            //door.Open();
             Console.WriteLine();
 
             // The simple sequence should now run
