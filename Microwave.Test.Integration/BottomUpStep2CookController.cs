@@ -55,10 +55,7 @@ namespace Microwave.Test.Integration
         public void Cooking_TimerTick_DisplayCalled()
         {
             sut.StartCooking(50, 60*60);
-            timer.TimerTick += Raise.EventWith(timer, EventArgs.Empty);
-            timer.TimerTick += Raise.EventWith(timer, EventArgs.Empty);
-            timer.TimerTick += Raise.EventWith(timer, EventArgs.Empty);
-            timer.TimerTick += Raise.EventWith(timer, EventArgs.Empty);
+            
             Assert.That(stringWriter.ToString().Contains("0:59"));
         }
 

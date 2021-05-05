@@ -45,7 +45,7 @@ namespace Microwave.Classes.Boundary
             // Do what I should
             if (TimeRemaining > 0)
             {
-                TimeRemaining--; //før stod der -1000 og det virkede ikke
+                TimeRemaining -= 1000; //før stod der -1000 og det virkede ikke
                 TimerTick?.Invoke(this, EventArgs.Empty);
             }
             else if (TimeRemaining <= 0)

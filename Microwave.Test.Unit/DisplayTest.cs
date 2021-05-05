@@ -29,7 +29,7 @@ namespace Microwave.Test.Unit
         public void ShowTime_ZeroMinuteSomeSecond_CorrectOutput()
         {
             uut.ShowTime(0, 5);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0:5")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0:05")));
         }
 
         [Test]
