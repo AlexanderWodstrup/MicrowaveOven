@@ -78,5 +78,22 @@ namespace Microwave.Test.Integration
 
             Assert.That(stringWriter.ToString().Contains($"PowerTube works with {power}\r\n"));
         }
+
+        [Test]
+        public void ActivePowerTube_TurnsOff()
+        {
+            powerTube.TurnOn(80);
+            powerTube.TurnOff();
+
+            Assert.That(stringWriter.ToString().Contains("turned off"));
+        }
+
+        [Test]
+        public void InactivePowerTube_TurnsOff_DoesNothing()
+        {
+            powerTube.TurnOff();
+
+            Assert.That(stringWriter.ToString().Contains(""));
+        }
     }
 }
