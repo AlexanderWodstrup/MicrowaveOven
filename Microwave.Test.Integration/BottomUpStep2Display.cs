@@ -25,49 +25,49 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void DisplayShowsTimeCorrectly_ZeroMinZeroSec()
+        public void ShowTime_ZeroMinuteZeroSeconds_CorrectOutput()
         {
             sut.ShowTime(0, 0);
             Assert.That(stringWriter.ToString().Contains("0:0"));
         }
 
         [Test]
-        public void DisplayShowsTimeCorrectly_ZeroMinSomeSec()
+        public void ShowTime_ZeroMinuteSomeSecond_CorrectOutput()
         {
             sut.ShowTime(0, 5);
             Assert.That(stringWriter.ToString().Contains("0:05"));
         }
 
         [Test]
-        public void DisplayShowsTimeCorrectly_SomeMinZeroSec()
+        public void ShowTime_SomeMinuteZeroSecond_CorrectOutput()
         {
             sut.ShowTime(4, 0);
             Assert.That(stringWriter.ToString().Contains("4:0"));
         }
 
         [Test]
-        public void DisplayShowsTimeCorrectly_SomeMinSomeSec()
+        public void ShowTime_SomeMinuteSomeSecond_CorrectOutput()
         {
             sut.ShowTime(08, 05);
             Assert.That(stringWriter.ToString().Contains("8:05"));
         }
 
         [Test]
-        public void DisplayShowsPowerCorrectly_Zero()
+        public void ShowPower_Zero_CorrectOutput()
         {
             sut.ShowPower(0);
             Assert.That(stringWriter.ToString().Contains("0 W"));
         }
 
         [Test]
-        public void DisplayShowsPowerCorrectly_NonZero()
+        public void ShowPower_NotZero_CorrectOutput()
         {
             sut.ShowPower(50);
             Assert.That(stringWriter.ToString().Contains("50 W"));
         }
 
         [Test]
-        public void DisplayClearCorrectly()
+        public void Clear_CorrectOutput()
         {
             sut.Clear();
             Assert.That(stringWriter.ToString().Contains("cleared"));

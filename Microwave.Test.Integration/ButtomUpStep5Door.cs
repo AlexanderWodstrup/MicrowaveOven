@@ -14,7 +14,7 @@ namespace Microwave.Test.Integration
     [TestFixture]
     public class ButtomUpStep5Door
     {
-        private Door door;
+        private Door sut;
         private Display display;
         private Light light;
         private Button powerButton;
@@ -30,7 +30,7 @@ namespace Microwave.Test.Integration
         [SetUp]
         public void Setup()
         {
-            door = new Door();
+            sut = new Door();
             output = new Output();
             light = new Light(output);
             display = new Display(output);
@@ -40,7 +40,7 @@ namespace Microwave.Test.Integration
             timer = new Timer();
             startcancelButton = new Button();
             cookController = new CookController(timer, display, powerTube);
-            userInterface = new UserInterface(powerButton, timeButton, startcancelButton, door, display, light, cookController);
+            userInterface = new UserInterface(powerButton, timeButton, startcancelButton, sut, display, light, cookController);
             stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
         }
@@ -48,7 +48,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void EventOpen_Ready_LightOn()
         {
-            door.Open();
+            sut.Open();
 
             Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
@@ -59,7 +59,7 @@ namespace Microwave.Test.Integration
             powerButton.Press();
             timeButton.Press();
             startcancelButton.Press();
-            door.Open();
+            sut.Open();
             Assert.That(stringWriter.ToString().Contains("Light is turned on") && stringWriter.ToString().Contains("PowerTube turned off") && stringWriter.ToString().Contains("Display cleared"));
         }
 
@@ -67,8 +67,8 @@ namespace Microwave.Test.Integration
         [Test]
         public void EventOpen_ReadyOpen_LightOff()
         {
-            door.Open();
-            door.Close();
+            sut.Open();
+            sut.Close();
 
             Assert.That(stringWriter.ToString().Contains("Light is turned off"));
         }
@@ -82,7 +82,7 @@ namespace Microwave.Test.Integration
            StringBuilder sb = stringWriter.GetStringBuilder();
            sb.Remove(0, sb.Length);
 
-           door.Open();
+           sut.Open();
 
            Assert.That(!stringWriter.ToString().Contains("Light is turned on")); // Der skal ikke printes at lyset bliver tændt eftersom det er tændt i forvejen fordi microovnen er i gang.
            Assert.That(stringWriter.ToString().Contains("PowerTube turned off") && stringWriter.ToString().Contains("Display cleared"));
