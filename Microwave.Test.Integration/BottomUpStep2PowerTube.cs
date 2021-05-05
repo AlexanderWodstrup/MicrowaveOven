@@ -11,7 +11,7 @@ namespace Microwave.Test.Integration
     public class BottomUpStep2PowerTube
     {
         private PowerTube sut;
-        private Output output;
+        private IOutput output;
         private StringWriter stringWriter;
         [SetUp]
         public void Setup()
@@ -36,10 +36,13 @@ namespace Microwave.Test.Integration
         [TestCase(-750)]
         [TestCase(-1)]
         [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(49)]
         [TestCase(701)]
         [TestCase(750)]
         public void PowerTubeIsOn_AndPowerExcidesRange_ThrowsException(int power)
         {
+
             Assert.Throws<System.ArgumentOutOfRangeException>(() => sut.TurnOn(power));
         }
 

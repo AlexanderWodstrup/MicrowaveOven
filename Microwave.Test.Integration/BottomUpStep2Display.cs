@@ -12,7 +12,7 @@ namespace Microwave.Test.Integration
     public class BottomUpStep2Display
     {
         private Display sut;
-        private Output output;
+        private IOutput output;
         private StringWriter stringWriter;
 
         [SetUp]
@@ -28,28 +28,28 @@ namespace Microwave.Test.Integration
         public void ShowTime_ZeroMinuteZeroSeconds_CorrectOutput()
         {
             sut.ShowTime(0, 0);
-            Assert.That(stringWriter.ToString().Contains("0:0"));
+            Assert.That(stringWriter.ToString().Contains("00:00"));
         }
 
         [Test]
         public void ShowTime_ZeroMinuteSomeSecond_CorrectOutput()
         {
-            sut.ShowTime(0, 5);
-            Assert.That(stringWriter.ToString().Contains("0:05"));
+            sut.ShowTime(0, 7);
+            Assert.That(stringWriter.ToString().Contains("00:07"));
         }
 
         [Test]
         public void ShowTime_SomeMinuteZeroSecond_CorrectOutput()
         {
             sut.ShowTime(4, 0);
-            Assert.That(stringWriter.ToString().Contains("4:0"));
+            Assert.That(stringWriter.ToString().Contains("04:00"));
         }
 
         [Test]
         public void ShowTime_SomeMinuteSomeSecond_CorrectOutput()
         {
             sut.ShowTime(08, 05);
-            Assert.That(stringWriter.ToString().Contains("8:05"));
+            Assert.That(stringWriter.ToString().Contains("08:05"));
         }
 
         [Test]

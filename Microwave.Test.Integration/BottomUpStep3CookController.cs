@@ -15,9 +15,9 @@ namespace Microwave.Test.Integration
     {
         private StringWriter stringWriter;
         private CookController sut;
-        private Display display;
-        private PowerTube powerTube;
-        private Output output;
+        private IDisplay display;
+        private IPowerTube powerTube;
+        private IOutput output;
         private ITimer timer;
         private IUserInterface ui;
         [SetUp]
@@ -38,8 +38,8 @@ namespace Microwave.Test.Integration
         public void StartCooking_ValidParameters_TimerStarted()
         {
             sut.StartCooking(50, 60);
-            timer.TimeRemaining.Returns(60);
-            Assert.AreEqual(timer.TimeRemaining, 60);
+            timer.TimeRemaining.Returns(60000);
+            Assert.AreEqual(timer.TimeRemaining, 60000);
             
         }
 
@@ -90,9 +90,9 @@ namespace Microwave.Test.Integration
             Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
-        [TestCase(50, 1000)]
-        [TestCase(350, 1000)]
-        [TestCase(700, 1000)]
+        [TestCase(50, 10)]
+        [TestCase(350, 10)]
+        [TestCase(700, 10)]
         public void StartCooking_StartsCooking(int power, int time)
         {
             sut.StartCooking(power, time);
@@ -101,15 +101,15 @@ namespace Microwave.Test.Integration
             //Assert.That(timer.TimeRemaining, Is.EqualTo(time));
         }
 
-        [TestCase(40, 1000)]
-        [TestCase(710, 1000)]
+        [TestCase(40, 10)]
+        [TestCase(710, 10)]
         public void StartCooking_InvalidPower_Throws(int power, int time)
         {
             Assert.That(() => sut.StartCooking(power, time), Throws.TypeOf<ArgumentOutOfRangeException>());
             Assert.That(timer.TimeRemaining, Is.EqualTo(0));
         }
 
-        [TestCase(200, 1000)]
+        [TestCase(200, 10)]
         public void StartCooking_AlreadyActive_Throws(int power, int time)
         {
             sut.StartCooking(power, time);
@@ -128,7 +128,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void TurnOff_Active_DisplaysSomething()
         {
-            sut.StartCooking(100, 1000);
+            sut.StartCooking(100, 10);
             sut.Stop();
 
             Assert.That(stringWriter.ToString().Contains("turned off"));

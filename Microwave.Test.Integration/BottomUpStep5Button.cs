@@ -13,14 +13,14 @@ namespace Microwave.Test.Integration
     [TestFixture]
     class BottomUpStep3Button
     {
-        private UserInterface userInterface;
+        private IUserInterface userInterface;
         private CookController cookController;
-        private Display display;
-        private Light light;
-        private Output output;
-        private Door door;
-        private Timer timer;
-        private PowerTube powerTube;
+        private IDisplay display;
+        private ILight light;
+        private IOutput output;
+        private IDoor door;
+        private ITimer timer;
+        private IPowerTube powerTube;
         private Button powerButton;
         private Button timerButton;
         private Button startcancelButton;

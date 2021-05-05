@@ -32,11 +32,11 @@ namespace Microwave.Test.Unit
         {
             uut.StartCooking(50, 60);
 
-            timer.Received().Start(60);
+            timer.Received().Start(60000);
         }
 
         [Test]
-        public void StartCooking_ValidParameters_PowerTubeStarted()
+        public void _ValidParameters_PowerTubeStarted()
         {
             uut.StartCooking(50, 60);
 

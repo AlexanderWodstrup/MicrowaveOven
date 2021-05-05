@@ -19,13 +19,13 @@ namespace Microwave.Test.Integration
         private IButton powerButton;
         private IButton startCancelButton;
         private IDoor door;
-        private Display display;
-        private Light light;
-        private CookController cookController;
-        private Output output;
-        //private IOutput output;
-        private Timer timer;
-        private PowerTube powerTube;
+        private IDisplay display;
+        private ILight light;
+        private ICookController cookController;
+        private IOutput output;
+        
+        private ITimer timer;
+        private IPowerTube powerTube;
         private StringWriter stringWriter;
 
         [SetUp]

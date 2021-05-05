@@ -15,17 +15,17 @@ namespace Microwave.Test.Integration
     public class ButtomUpStep5Door
     {
         private Door sut;
-        private Display display;
-        private Light light;
-        private Button powerButton;
-        private Button timeButton;
-        private Button startcancelButton;
-        private Output output;
-        private UserInterface userInterface;
+        private IDisplay display;
+        private ILight light;
+        private IButton powerButton;
+        private IButton timeButton;
+        private IButton startcancelButton;
+        private IOutput output;
+        private IUserInterface userInterface;
         private CookController cookController;
         private StringWriter stringWriter;
-        private Timer timer;
-        private PowerTube powerTube;
+        private ITimer timer;
+        private IPowerTube powerTube;
 
         [SetUp]
         public void Setup()
@@ -41,6 +41,7 @@ namespace Microwave.Test.Integration
             startcancelButton = new Button();
             cookController = new CookController(timer, display, powerTube);
             userInterface = new UserInterface(powerButton, timeButton, startcancelButton, sut, display, light, cookController);
+            cookController.UI = userInterface;
             stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
         }

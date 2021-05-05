@@ -12,7 +12,7 @@ namespace Microwave.Test.Integration
     public class BottomUpStep2Light
     {
         private Light sut;
-        private Output output;
+        private IOutput output;
         private StringWriter stringWriter;
         [SetUp]
         public void Setup()
