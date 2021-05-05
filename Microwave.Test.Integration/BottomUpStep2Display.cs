@@ -28,28 +28,28 @@ namespace Microwave.Test.Integration
         public void DisplayShowsTimeCorrectly_ZeroMinZeroSec()
         {
             sut.ShowTime(0, 0);
-            Assert.That(stringWriter.ToString().Contains("00:00"));
+            Assert.That(stringWriter.ToString().Contains("0:0"));
         }
 
         [Test]
         public void DisplayShowsTimeCorrectly_ZeroMinSomeSec()
         {
-            sut.ShowTime(0, 7);
-            Assert.That(stringWriter.ToString().Contains("00:07"));
+            sut.ShowTime(0, 5);
+            Assert.That(stringWriter.ToString().Contains("0:5"));
         }
 
         [Test]
         public void DisplayShowsTimeCorrectly_SomeMinZeroSec()
         {
             sut.ShowTime(4, 0);
-            Assert.That(stringWriter.ToString().Contains("04:00"));
+            Assert.That(stringWriter.ToString().Contains("4:0"));
         }
 
         [Test]
         public void DisplayShowsTimeCorrectly_SomeMinSomeSec()
         {
             sut.ShowTime(08, 05);
-            Assert.That(stringWriter.ToString().Contains("08:05"));
+            Assert.That(stringWriter.ToString().Contains("8:05"));
         }
 
         [Test]

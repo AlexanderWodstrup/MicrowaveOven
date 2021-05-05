@@ -14,7 +14,16 @@ namespace Microwave.Classes.Boundary
 
         public void ShowTime(int min, int sec)
         {
-            myOutput.OutputLine($"Display shows: " + min + ":" + sec);
+            if (sec < 10)
+            {
+                string secString = "0" + sec.ToString();
+                myOutput.OutputLine($"Display shows: " + min + ":" + secString);
+            }
+            else
+            {
+                myOutput.OutputLine($"Display shows: " + min + ":" + sec);
+            }
+            
         }
 
         public void ShowPower(int power)

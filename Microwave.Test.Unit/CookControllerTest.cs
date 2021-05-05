@@ -51,7 +51,7 @@ namespace Microwave.Test.Unit
             timer.TimeRemaining.Returns(115);
             timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
 
-            display.Received().ShowTime(1, 55);
+            display.Received().ShowTime(1, 54);
         }
 
         [Test]
