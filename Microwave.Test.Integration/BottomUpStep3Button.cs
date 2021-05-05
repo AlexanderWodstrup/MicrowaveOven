@@ -41,17 +41,16 @@ namespace Microwave.Test.Integration
             timerButton = new Button();
             startcancelButton = new Button();
             powerTube = new PowerTube(output);
+            cookController = new CookController(timer, display, powerTube);
             userInterface = new UserInterface(powerButton, timerButton, startcancelButton, door, display, light, cookController);
-            cookController = new CookController(timer, display, powerTube, userInterface);
         }
 
         [Test]
-        public void PowerButton_Ready_PowerShows(int power)
+        public void PowerButton_Ready_PowerShows()
         {
-            
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            Assert.That(stringWriter.ToString().Contains("Display shows "));
+            Assert.That(stringWriter.ToString().Contains("80"));
         }
     }
 }
