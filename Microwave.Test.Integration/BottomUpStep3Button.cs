@@ -43,6 +43,8 @@ namespace Microwave.Test.Integration
             powerTube = new PowerTube(output);
             cookController = new CookController(timer, display, powerTube);
             userInterface = new UserInterface(powerButton, timerButton, startcancelButton, door, display, light, cookController);
+            cookController.UI = userInterface;
+
         }
 
         [Test]
