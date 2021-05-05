@@ -18,22 +18,23 @@ namespace Microwave.Test.Integration
         private Display display;
         private PowerTube powerTube;
         private Output output;
-        private Timer timer;
+        private ITimer timer;
         private IUserInterface ui;
         [SetUp]
         public void Setup()
         {
-            stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
+            
 
             ui = Substitute.For<IUserInterface>();
             output = new Output();
-            timer = new Timer();
+            timer = Substitute.For<ITimer>();
             display = new Display(output);
             powerTube = new PowerTube(output);
 
 
             sut = new CookController(timer,display,powerTube, ui);
+            stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
         }
         [Test]
         public void StartCooking_ValidParameters_TimerStarted()
@@ -55,9 +56,12 @@ namespace Microwave.Test.Integration
         [Test]
         public void Cooking_TimerTick_DisplayCalled()
         {
-            sut.StartCooking(50, 60*60);
-            
-            Assert.That(stringWriter.ToString().Contains("0:59"));
+            sut.StartCooking(50, 120);
+
+            timer.TimeRemaining.Returns(115000);
+            timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
+
+            Assert.That(stringWriter.ToString().Contains("1:55"));
         }
 
         [Test]
@@ -65,9 +69,9 @@ namespace Microwave.Test.Integration
         {
             sut.StartCooking(50, 60);
 
-            timer.Expired += Raise.EventWith(this, EventArgs.Empty);
-
-            powerTube.Received().TurnOff();
+            timer.Expired += Raise.Event();
+            
+            Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
         [Test]
@@ -75,7 +79,7 @@ namespace Microwave.Test.Integration
         {
             sut.StartCooking(50, 60);
 
-            timer.Expired += Raise.EventWith(this, EventArgs.Empty);
+            timer.Expired += Raise.Event();
 
             ui.Received().CookingIsDone();
         }
@@ -85,8 +89,7 @@ namespace Microwave.Test.Integration
         {
             sut.StartCooking(50, 60);
             sut.Stop();
-
-            powerTube.Received().TurnOff();
+            Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
         [TestCase(50, 1000)]
