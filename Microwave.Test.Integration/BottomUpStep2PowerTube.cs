@@ -55,7 +55,7 @@ namespace Microwave.Test.Integration
         public void PowerTubeIsOff_TurnOff_NoOutput()
         {
             sut.TurnOff();
-            Assert.That(stringWriter.ToString() == "");
+            Assert.That(!stringWriter.ToString().Contains("turned off"));
             
         }
 

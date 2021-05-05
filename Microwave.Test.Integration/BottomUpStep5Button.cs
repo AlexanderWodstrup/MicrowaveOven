@@ -92,7 +92,13 @@ namespace Microwave.Test.Integration
             Assert.That(stringWriter.ToString().Contains(time));
         }
 
-        //[Test]
-        //public void PowerButton_
+        [Test]
+        public void StartCancelButton_ShowLightANDShowPower()
+        {
+            powerButton.Press();
+            timerButton.Press();
+            startcancelButton.Press();
+            Assert.That(stringWriter.ToString().Contains("Light is turned on") && stringWriter.ToString().Contains("PowerTube works with 50"));
+        }
     }
 }

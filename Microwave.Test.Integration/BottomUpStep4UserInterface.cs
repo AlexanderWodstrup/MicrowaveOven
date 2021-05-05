@@ -39,7 +39,6 @@ namespace Microwave.Test.Integration
             startCancelButton = Substitute.For<IButton>();
             door = Substitute.For<IDoor>();
             output = new Output();
-            //output = Substitute.For<IOutput>();
             display = new Display(output);
             light = new Light(output);
             timer = new Timer();
