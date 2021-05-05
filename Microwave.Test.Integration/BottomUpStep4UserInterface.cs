@@ -52,7 +52,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void Ready_DoorOpen_LightOn()
         {
-            door.Open();
+            door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("turned on"));
         }
@@ -60,11 +60,9 @@ namespace Microwave.Test.Integration
         [Test]
         public void DoorOpen_DoorClose_LightOff()
         {
-            door.Open();
-            door.Close();
-            //light.TurnOff();
+            door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            door.Closed += Raise.EventWith(this, EventArgs.Empty);
 
-            //door.Closed += Raise.EventWith(this, EventArgs.Empty);
             Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
@@ -115,7 +113,7 @@ namespace Microwave.Test.Integration
         public void SetPower_CancelButton_DisplayCleared()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            startCancelButton.Press();
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("cleared"));
         }
@@ -124,7 +122,7 @@ namespace Microwave.Test.Integration
         public void SetPower_DoorOpened_DisplayCleared()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            door.Open();
+            door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("cleared"));
         }
@@ -133,7 +131,7 @@ namespace Microwave.Test.Integration
         public void SetPower_DoorOpened_LightOn()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            door.Open();
+            door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
@@ -142,7 +140,7 @@ namespace Microwave.Test.Integration
         public void SetPower_TimeButton_TimeIs1()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            timeButton.Press();
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("1:00"));
         }
@@ -151,8 +149,8 @@ namespace Microwave.Test.Integration
         public void SetPower_TimeButton_TimeIs2()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            timeButton.Press();
-            timeButton.Press();
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("2:00"));
         }
@@ -161,10 +159,10 @@ namespace Microwave.Test.Integration
         public void SetTime_StartButton_CookerIsCalled()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            timeButton.Press();
-            startCancelButton.Press();
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            Assert.That(stringWriter.ToString().Contains("2:00"));
+            Assert.That(stringWriter.ToString().Contains("1:00") && stringWriter.ToString().Contains("50 W"));
         }
 
         [Test]
@@ -176,7 +174,7 @@ namespace Microwave.Test.Integration
             // Now in SetTime
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
-            display.Received().Clear();
+            Assert.That(stringWriter.ToString().Contains("cleared"));
         }
 
         [Test]
@@ -188,7 +186,7 @@ namespace Microwave.Test.Integration
             // Now in SetTime
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
-            light.Received().TurnOn();
+            Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
 
         [Test]
@@ -205,7 +203,7 @@ namespace Microwave.Test.Integration
             // Should call with correct values
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            //cooker.Received(1).StartCooking(100, 120);
+            Assert.That(stringWriter.ToString().Contains("2:00") && stringWriter.ToString().Contains("100 W"));
         }
 
         [Test]
