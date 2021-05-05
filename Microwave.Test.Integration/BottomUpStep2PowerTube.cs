@@ -1,4 +1,6 @@
-﻿using Microwave.Classes.Boundary;
+﻿using System;
+using System.IO;
+using Microwave.Classes.Boundary;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
@@ -9,12 +11,17 @@ namespace Microwave.Test.Integration
     public class BottomUpStep2PowerTube
     {
         private PowerTube sut;
-        private IOutput fakeOutput;
+        private Output output;
+        private StringWriter stringWriter;
         [SetUp]
         public void Setup()
         {
-            fakeOutput = Substitute.For<IOutput>();
-            sut = new PowerTube(fakeOutput);
+            stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            output = new Output();
+            
+            sut = new PowerTube(output);
         }
         [TestCase(1)]
         [TestCase(50)]
@@ -22,7 +29,7 @@ namespace Microwave.Test.Integration
         public void PowerTubeIsOff_TurnOn(int power)
         {
             sut.TurnOn(power);
-            fakeOutput.Received().OutputLine(Arg.Is<string>(s => s.Contains($"{power}") && s.Contains("PowerTube works")));
+            Assert.That(stringWriter.ToString().Contains($"{power}") && stringWriter.ToString().Contains("PowerTube works"));
         }
 
         [TestCase(-50)]
@@ -40,14 +47,15 @@ namespace Microwave.Test.Integration
         {
             sut.TurnOn(25);
             sut.TurnOff();
-            fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
+            Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
         [Test]
         public void PowerTubeIsOff_TurnOff_NoOutput()
         {
             sut.TurnOff();
-            fakeOutput.Received(0).OutputLine(Arg.Any<string>());
+            Assert.That(stringWriter.ToString() == "");
+            
         }
 
         [TestCase(50)]
