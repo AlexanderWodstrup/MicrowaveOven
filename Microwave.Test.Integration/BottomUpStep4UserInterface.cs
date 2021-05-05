@@ -11,7 +11,7 @@ using NUnit.Framework.Internal;
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    public class BottomUpStep3UserInterface
+    public class BottomUpStep4UserInterface
     {
         private UserInterface sut;
         private Button timeButton;

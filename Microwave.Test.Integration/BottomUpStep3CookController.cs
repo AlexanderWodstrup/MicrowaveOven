@@ -11,7 +11,7 @@ using NUnit.Framework.Internal;
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    public class BottomUpStep2CookController
+    public class BottomUpStep3CookController
     {
         private StringWriter stringWriter;
         private CookController sut;

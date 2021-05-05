@@ -45,6 +45,7 @@ namespace Microwave.App
             
 
             startCancelButton.Press();
+            
 
             // The simple sequence should now run
 

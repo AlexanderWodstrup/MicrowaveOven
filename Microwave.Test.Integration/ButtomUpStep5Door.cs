@@ -11,7 +11,7 @@ using NUnit.Framework.Internal;
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    public class ButtomUpStep3Door
+    public class ButtomUpStep5Door
     {
         private Door door;
         private Display display;
@@ -49,8 +49,19 @@ namespace Microwave.Test.Integration
         {
             door.Open();
 
-            Assert.That(stringWriter.ToString().Contains("turned on"));
+            Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
+
+        [Test]
+        public void CookingIsOn_DoorOpens()
+        {
+            powerButton.Press();
+            timeButton.Press();
+            startcancelButton.Press();
+            door.Open();
+            Assert.That(stringWriter.ToString().Contains("Light is turned on") && stringWriter.ToString().Contains("PowerTube turned off") && stringWriter.ToString().Contains("Display cleared"));
+        }
+
 
         [Test]
         public void EventOpen_ReadyOpen_LightOff()
@@ -58,7 +69,7 @@ namespace Microwave.Test.Integration
             door.Open();
             door.Close();
 
-            Assert.That(stringWriter.ToString().Contains("turned off"));
+            Assert.That(stringWriter.ToString().Contains("Light is turned off"));
         }
 
         [Test]
@@ -67,7 +78,7 @@ namespace Microwave.Test.Integration
             cookController.StartCooking(100, 5);
             door.Open();
 
-            Assert.That(stringWriter.ToString().Contains("turned on"));
+            Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
 
     }

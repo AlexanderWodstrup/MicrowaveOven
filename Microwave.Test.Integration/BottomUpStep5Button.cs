@@ -11,7 +11,7 @@ using NUnit.Framework.Internal;
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    class BottomUpStep3Button
+    class BottomUpStep5Button
     {
         private UserInterface userInterface;
         private CookController cookController;
