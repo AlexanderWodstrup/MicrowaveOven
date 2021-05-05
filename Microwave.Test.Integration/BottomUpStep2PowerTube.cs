@@ -23,20 +23,21 @@ namespace Microwave.Test.Integration
             
             sut = new PowerTube(output);
         }
-        [TestCase(1)]
+        
         [TestCase(50)]
         [TestCase(100)]
+        [TestCase(700)]
         public void PowerTubeIsOff_TurnOn(int power)
         {
             sut.TurnOn(power);
             Assert.That(stringWriter.ToString().Contains($"{power}") && stringWriter.ToString().Contains("PowerTube works"));
         }
 
-        [TestCase(-50)]
+        [TestCase(-750)]
         [TestCase(-1)]
         [TestCase(0)]
-        [TestCase(101)]
-        [TestCase(150)]
+        [TestCase(701)]
+        [TestCase(750)]
         public void PowerTubeIsOn_AndPowerExcidesRange_ThrowsException(int power)
         {
             Assert.Throws<System.ArgumentOutOfRangeException>(() => sut.TurnOn(power));
@@ -45,7 +46,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void PowerTubeIsOn_TurnOffCorrectly()
         {
-            sut.TurnOn(25);
+            sut.TurnOn(50);
             sut.TurnOff();
             Assert.That(stringWriter.ToString().Contains("turned off"));
         }
@@ -59,11 +60,11 @@ namespace Microwave.Test.Integration
         }
 
         [TestCase(50)]
-        [TestCase(25)]
-        [TestCase(10)]
+        [TestCase(100)]
+        [TestCase(700)]
         public void PowerTubeIsOn_TurnOn_ThrowsException(int power)
         {
-            sut.TurnOn(25);
+            sut.TurnOn(50);
             Assert.Throws<System.ApplicationException>(() => sut.TurnOn(power));
         }
     }
