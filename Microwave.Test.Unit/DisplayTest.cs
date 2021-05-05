@@ -22,21 +22,21 @@ namespace Microwave.Test.Unit
         public void ShowTime_ZeroMinuteZeroSeconds_CorrectOutput()
         {
             uut.ShowTime(0,0);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("00:00")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0:0")));
         }
 
         [Test]
         public void ShowTime_ZeroMinuteSomeSecond_CorrectOutput()
         {
             uut.ShowTime(0, 5);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("00:05")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0:5")));
         }
 
         [Test]
         public void ShowTime_SomeMinuteZeroSecond_CorrectOutput()
         {
             uut.ShowTime(5, 0);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("05:00")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("5:0")));
         }
 
         [Test]
