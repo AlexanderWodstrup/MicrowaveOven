@@ -23,8 +23,6 @@ namespace Microwave.Test.Integration
         [SetUp]
         public void Setup()
         {
-            
-
             ui = Substitute.For<IUserInterface>();
             output = new Output();
             timer = Substitute.For<ITimer>();
