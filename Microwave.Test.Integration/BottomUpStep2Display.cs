@@ -35,7 +35,7 @@ namespace Microwave.Test.Integration
         public void DisplayShowsTimeCorrectly_ZeroMinSomeSec()
         {
             sut.ShowTime(0, 5);
-            Assert.That(stringWriter.ToString().Contains("0:5"));
+            Assert.That(stringWriter.ToString().Contains("0:05"));
         }
 
         [Test]
