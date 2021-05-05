@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Text;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
@@ -75,11 +76,16 @@ namespace Microwave.Test.Integration
         [Test]
         public void EventOpen_StartCooking_LightOn()
         {
-            cookController.StartCooking(100, 5);
-            door.Open();
+           powerButton.Press();
+           timeButton.Press();
+           startcancelButton.Press();
+           StringBuilder sb = stringWriter.GetStringBuilder();
+           sb.Remove(0, sb.Length);
 
-            Assert.That(stringWriter.ToString().Contains("Light is turned on"));
+           door.Open();
+
+           Assert.That(!stringWriter.ToString().Contains("Light is turned on")); // Der skal ikke printes at lyset bliver tændt eftersom det er tændt i forvejen fordi microovnen er i gang.
+           Assert.That(stringWriter.ToString().Contains("PowerTube turned off") && stringWriter.ToString().Contains("Display cleared"));
         }
-
     }
 }

@@ -11,7 +11,7 @@ using NUnit.Framework.Internal;
 namespace Microwave.Test.Integration
 {
     [TestFixture]
-    class BottomUpStep5Button
+    class BottomUpStep3Button
     {
         private UserInterface userInterface;
         private CookController cookController;
@@ -42,17 +42,54 @@ namespace Microwave.Test.Integration
             startcancelButton = new Button();
             powerTube = new PowerTube(output);
             cookController = new CookController(timer, display, powerTube);
-            userInterface = new UserInterface(powerButton, timerButton, startcancelButton, door, display, light, cookController);
+            userInterface = new UserInterface(powerButton, timerButton, startcancelButton, door, display, light,
+                cookController);
             cookController.UI = userInterface;
 
         }
 
-        [Test]
-        public void PowerButton_Ready_PowerShows()
+        [TestCase(2)]
+        [TestCase(5)]
+        [TestCase(9)]
+        [TestCase(14)]
+        public void PowerButton_Ready_PowerShows(int numPressed)
         {
-            powerButton.Press();
+            for (int i = 0; i < numPressed; i++)
+            {
+                powerButton.Press();
+            }
+
+
+            string power = (numPressed * 50).ToString();
+            Assert.That(stringWriter.ToString().Contains(power));
+        }
+
+        [Test]
+        public void PowerButton_Ready_PowerShows_ResetTo50()
+        {
+            for (int i = 0; i < 15; i++)
+            {
+                powerButton.Press();
+            }
 
             Assert.That(stringWriter.ToString().Contains("50"));
+        }
+
+        [TestCase(2)]
+        [TestCase(5)]
+        [TestCase(9)]
+        [TestCase(100)]
+        public void TimeButtom_ShowTime(int numPressed)
+        {
+            powerButton.Press();
+            for (int i = 0; i < numPressed; i++)
+            {
+                timerButton.Press();
+            }
+
+            string time = numPressed.ToString();
+
+            Assert.That(stringWriter.ToString().Contains(time));
         }
 
         //[Test]

@@ -31,6 +31,9 @@ namespace Microwave.App
             // Finish the double association
             cooker.UI = ui;
 
+            door.Open();
+            Console.WriteLine("Inserting food");
+            door.Close();
             // Simulate a simple sequence
             for (int i = 0; i < 14; i++)
             {
@@ -46,6 +49,9 @@ namespace Microwave.App
 
             startCancelButton.Press();
             
+            Console.WriteLine();
+            door.Open();
+            Console.WriteLine();
 
             // The simple sequence should now run
 
