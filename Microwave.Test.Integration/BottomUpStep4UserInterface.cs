@@ -39,7 +39,6 @@ namespace Microwave.Test.Integration
             startCancelButton = Substitute.For<IButton>();
             door = Substitute.For<IDoor>();
             output = new Output();
-            //output = Substitute.For<IOutput>();
             display = new Display(output);
             light = new Light(output);
             timer = new Timer();
@@ -220,7 +219,7 @@ namespace Microwave.Test.Integration
             // Should call with correct values
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            //cooker.Received(1).StartCooking(700, 60);
+            Assert.That(stringWriter.ToString().Contains("PowerTube works with 700"));
 
         }
 
@@ -235,7 +234,7 @@ namespace Microwave.Test.Integration
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now cooking
 
-            light.Received(1).TurnOn();
+            Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
 
         [Test]
@@ -248,8 +247,8 @@ namespace Microwave.Test.Integration
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in cooking
 
-            //uut.CookingIsDone();
-            light.Received(1).TurnOff();
+            sut.CookingIsDone();
+            Assert.That(stringWriter.ToString().Contains("Light is turned off"));
         }
 
         [Test]
@@ -261,10 +260,11 @@ namespace Microwave.Test.Integration
             // Now in SetTime
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in cooking
-
+            StringBuilder sb = stringWriter.GetStringBuilder();
+            sb.Remove(0, sb.Length);
             // Cooking is done
-            //uut.CookingIsDone();
-            display.Received(1).Clear();
+            sut.CookingIsDone();
+            Assert.That(stringWriter.ToString().Contains("Display cleared"));
         }
 
         [Test]
@@ -280,7 +280,7 @@ namespace Microwave.Test.Integration
             // Open door
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
-            //cooker.Received(1).Stop();
+            Assert.That(stringWriter.ToString().Contains("PowerTube turned off"));
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace Microwave.Test.Integration
             // Open door
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
-            display.Received(1).Clear();
+            Assert.That(stringWriter.ToString().Contains("Display cleared"));
         }
 
         [Test]
@@ -312,7 +312,7 @@ namespace Microwave.Test.Integration
             // Open door
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            //cooker.Received(1).Stop();
+            Assert.That(stringWriter.ToString().Contains("PowerTube turned off"));
         }
 
         [Test]
@@ -330,7 +330,7 @@ namespace Microwave.Test.Integration
             // Open door
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            light.Received(1).TurnOff();
+            Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
     }
 }

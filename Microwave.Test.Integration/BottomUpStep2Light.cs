@@ -24,21 +24,35 @@ namespace Microwave.Test.Integration
             sut = new Light(output);
         }
 
+        
         [Test]
-        public void TurnOnLightWorksCorrectly()
+        public void TurnOn_WasOff_CorrectOutput()
         {
             sut.TurnOn();
             Assert.That(stringWriter.ToString().Contains("turned on"));
-            //output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains("turned on")));
         }
 
         [Test]
-        public void TurnOffLightWorksCorrectly()
+        public void TurnOff_WasOn_CorrectOutput()
         {
             sut.TurnOn();
             sut.TurnOff();
             Assert.That(stringWriter.ToString().Contains("turned off"));
-            //output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains("turned off")));
+        }
+
+        [Test]
+        public void TurnOn_WasOn_CorrectOutput()
+        {
+            sut.TurnOn();
+            sut.TurnOn();
+            Assert.That(stringWriter.ToString().Contains("turned on"));
+        }
+
+        [Test]
+        public void TurnOff_WasOff_CorrectOutput()
+        {
+            sut.TurnOff();
+            Assert.That(!stringWriter.ToString().Contains("turned off"));
         }
     }
 }
