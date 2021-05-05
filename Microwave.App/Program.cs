@@ -32,8 +32,12 @@ namespace Microwave.App
             cooker.UI = ui;
 
             // Simulate a simple sequence
+            for (int i = 0; i < 14; i++)
+            {
+                powerButton.Press();
+            }
+            
 
-            powerButton.Press();
             for (int i = 0; i < 2; i++)
             {
                 timeButton.Press();

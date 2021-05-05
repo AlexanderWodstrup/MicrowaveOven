@@ -48,12 +48,11 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void PowerButton_Ready_PowerShows(int power)
+        public void PowerButton_Ready_PowerShows()
         {
-            
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            powerButton.Press();
 
-            Assert.That(stringWriter.ToString().Contains("Display shows "));
+            Assert.That(stringWriter.ToString().Contains("50"));
         }
     }
 }
