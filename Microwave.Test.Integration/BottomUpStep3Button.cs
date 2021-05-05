@@ -54,5 +54,8 @@ namespace Microwave.Test.Integration
 
             Assert.That(stringWriter.ToString().Contains("50"));
         }
+
+        //[Test]
+        //public void PowerButton_
     }
 }

@@ -49,17 +49,15 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void LightIsTurnedOn()
+        public void Ready_DoorOpen_LightOn()
         {
-            //light.TurnOn();
             door.Open();
 
-            //door.Opened += Raise.EventWith(this, EventArgs.Empty);
             Assert.That(stringWriter.ToString().Contains("turned on"));
         }
 
         [Test]
-        public void LightIsTurnedOff()
+        public void DoorOpen_DoorClose_LightOff()
         {
             door.Open();
             door.Close();
@@ -72,8 +70,10 @@ namespace Microwave.Test.Integration
         [TestCase(50)]
         [TestCase(350)]
         [TestCase(700)]
-        public void DoorOpenClose_Powered80W(int power)
+        public void Ready_DoorOpenClose_Ready_PowerIs50(int power)
         {
+            door.Open();
+            door.Close();
             powerTube.TurnOn(power);
 
             Assert.That(stringWriter.ToString().Contains($"PowerTube works with {power}\r\n"));
