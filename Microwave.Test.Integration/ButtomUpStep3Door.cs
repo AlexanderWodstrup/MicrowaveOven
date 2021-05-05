@@ -35,6 +35,8 @@ namespace Microwave.Test.Integration
             display = new Display(output);
             powerButton = new Button();
             timeButton = new Button();
+            powerTube = new PowerTube(output);
+            timer = new Timer();
             startcancelButton = new Button();
             cookController = new CookController(timer, display, powerTube);
             userInterface = new UserInterface(powerButton, timeButton, startcancelButton, door, display, light, cookController);
@@ -57,6 +59,15 @@ namespace Microwave.Test.Integration
             door.Close();
 
             Assert.That(stringWriter.ToString().Contains("turned off"));
+        }
+
+        [Test]
+        public void EventOpen_StartCooking_LightOn()
+        {
+            cookController.StartCooking(100, 5);
+            door.Open();
+
+            Assert.That(stringWriter.ToString().Contains("turned on"));
         }
 
     }
