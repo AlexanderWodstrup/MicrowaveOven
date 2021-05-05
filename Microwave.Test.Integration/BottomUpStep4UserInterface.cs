@@ -15,10 +15,10 @@ namespace Microwave.Test.Integration
     public class BottomUpStep4UserInterface
     {
         private UserInterface sut;
-        private Button timeButton;
-        private Button powerButton;
-        private Button startCancelButton;
-        private Door door;
+        private IButton timeButton;
+        private IButton powerButton;
+        private IButton startCancelButton;
+        private IDoor door;
         private Display display;
         private Light light;
         private CookController cookController;
@@ -34,10 +34,10 @@ namespace Microwave.Test.Integration
             stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            timeButton = new Button();
-            powerButton = new Button();
-            startCancelButton = new Button();
-            door = new Door();
+            timeButton = Substitute.For<IButton>();
+            powerButton = Substitute.For<IButton>();
+            startCancelButton = Substitute.For<IButton>();
+            door = Substitute.For<IDoor>();
             output = new Output();
             //output = Substitute.For<IOutput>();
             display = new Display(output);
@@ -320,6 +320,8 @@ namespace Microwave.Test.Integration
         [Test]
         public void Cooking_CancelButton_LightCalled()
         {
+            
+
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
