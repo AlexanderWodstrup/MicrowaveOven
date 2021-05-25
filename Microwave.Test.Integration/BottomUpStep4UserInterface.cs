@@ -215,6 +215,25 @@ namespace Microwave.Test.Integration
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("2:00") && stringWriter.ToString().Contains("100 W"));
+            Assert.AreEqual(timer.TimeRemaining,120000);
+        }
+
+        [Test]
+        public void Ready_PowerAndTime_CookerIsCalled_TimerWorksCorrectly()
+        {
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in SetPower
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in SetTime
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            // Should call with correct values
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+
+            Thread.Sleep(5100);
+            Assert.AreEqual(timer.TimeRemaining, 115000);
         }
 
         [Test]

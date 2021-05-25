@@ -16,12 +16,13 @@ namespace Microwave.Test.Integration
     public class BottomUpStep3CookController
     {
         private StringWriter stringWriter;
+        private IUserInterface ui;
         private CookController sut;
         private IDisplay display;
         private IPowerTube powerTube;
         private IOutput output;
         private ITimer timer;
-        private IUserInterface ui;
+        
         [SetUp]
         public void Setup()
         {
@@ -32,16 +33,33 @@ namespace Microwave.Test.Integration
             powerTube = new PowerTube(output);
 
 
-            sut = new CookController(timer,display,powerTube, ui);
+            sut = new CookController(timer,display,powerTube,ui);
             stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
         }
-        [Test]
-        public void StartCooking_ValidParameters_TimerStarted()
+
+
+        [TestCase(-1)]
+        [TestCase(10)]
+        [TestCase(0)]
+
+        public void StartCooking_TimerStart_TimeRemainingCorrect(int time)
         {
-            sut.StartCooking(50, 60);
-            
-            Assert.AreEqual(timer.TimeRemaining, 60000);
+
+            sut.StartCooking(50, time);
+
+            Assert.AreEqual(timer.TimeRemaining, time*1000);
+
+        }
+
+        [TestCase(60,60000,0)]
+        [TestCase(60, 55000, 5100)]
+        [TestCase(60, 49000, 11100)]
+        public void StartCooking_ValidParameters_TimerStarted(int time, int timeRemaining, int sleep)
+        {
+            sut.StartCooking(50, time);
+            Thread.Sleep(sleep);
+            Assert.AreEqual(timer.TimeRemaining, timeRemaining);
             
         }
 
@@ -53,14 +71,18 @@ namespace Microwave.Test.Integration
             Assert.That(stringWriter.ToString().Contains("works") && stringWriter.ToString().Contains("50"));
         }
 
-        [Test]
-        public void Cooking_TimerTick_DisplayCalled()
+        [TestCase(120, 5100, "1:55")]
+        [TestCase(120, 1100, "1:59")]
+        [TestCase(120, 11100, "1:49")]
+        [TestCase(5, 5000, "0:01")]
+        [TestCase(5, 6000, "turned off")]
+        public void Cooking_TimerTick_DisplayCalled(int time, int sleep, string message)
         {
-            sut.StartCooking(50, 120);
+            sut.StartCooking(50, time);
 
-            Thread.Sleep(5100);
+            Thread.Sleep(sleep);
 
-            Assert.That(stringWriter.ToString().Contains("1:55"));
+            Assert.That(stringWriter.ToString().Contains(message));
         }
 
         [Test]
@@ -80,7 +102,7 @@ namespace Microwave.Test.Integration
 
             Thread.Sleep(3100);
 
-            ui.Received().CookingIsDone();
+            ui.Received(1).CookingIsDone();
         }
 
         [Test]
@@ -88,6 +110,23 @@ namespace Microwave.Test.Integration
         {
             sut.StartCooking(50, 60);
             sut.Stop();
+            Assert.That(stringWriter.ToString().Contains("turned off"));
+        }
+        [Test]
+        public void Cooking_Stop_AndTimer_PowerTubeOff()
+        {
+            sut.StartCooking(50, 60);
+            Thread.Sleep(5000);
+            sut.Stop();
+            Assert.That(stringWriter.ToString().Contains("turned off"));
+        }
+        [Test]
+        public void Cooking_Stop_AndTimer_PowerTubeOff2()
+        {
+            sut.StartCooking(50, 60);
+            
+            sut.Stop();
+            Thread.Sleep(5000);
             Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
