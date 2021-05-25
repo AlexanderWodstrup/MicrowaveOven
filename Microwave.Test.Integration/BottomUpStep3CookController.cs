@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Threading;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -25,7 +27,7 @@ namespace Microwave.Test.Integration
         {
             ui = Substitute.For<IUserInterface>();
             output = new Output();
-            timer = Substitute.For<ITimer>();
+            timer = new Timer();
             display = new Display(output);
             powerTube = new PowerTube(output);
 
@@ -38,7 +40,7 @@ namespace Microwave.Test.Integration
         public void StartCooking_ValidParameters_TimerStarted()
         {
             sut.StartCooking(50, 60);
-            timer.TimeRemaining.Returns(60000);
+            
             Assert.AreEqual(timer.TimeRemaining, 60000);
             
         }
@@ -56,8 +58,7 @@ namespace Microwave.Test.Integration
         {
             sut.StartCooking(50, 120);
 
-            timer.TimeRemaining.Returns(115000);
-            timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
+            Thread.Sleep(5100);
 
             Assert.That(stringWriter.ToString().Contains("1:55"));
         }
@@ -65,19 +66,19 @@ namespace Microwave.Test.Integration
         [Test]
         public void Cooking_TimerExpired_PowerTubeOff()
         {
-            sut.StartCooking(50, 60);
+            sut.StartCooking(50, 3);
 
-            timer.Expired += Raise.Event();
-            
+            Thread.Sleep(3100);
+
             Assert.That(stringWriter.ToString().Contains("turned off"));
         }
 
         [Test]
         public void Cooking_TimerExpired_UICalled()
         {
-            sut.StartCooking(50, 60);
+            sut.StartCooking(50, 3);
 
-            timer.Expired += Raise.Event();
+            Thread.Sleep(3100);
 
             ui.Received().CookingIsDone();
         }

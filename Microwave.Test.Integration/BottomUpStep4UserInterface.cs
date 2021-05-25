@@ -2,26 +2,28 @@
 using System.Runtime.Serialization;
 using System.IO;
 using System.Text;
+using System.Threading;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
     [TestFixture]
     public class BottomUpStep4UserInterface
     {
-        private UserInterface sut;
+        private IUserInterface sut;
         private IButton timeButton;
         private IButton powerButton;
         private IButton startCancelButton;
         private IDoor door;
         private IDisplay display;
         private ILight light;
-        private ICookController cookController;
+        private CookController cookController;
         private IOutput output;
         
         private ITimer timer;
@@ -46,6 +48,7 @@ namespace Microwave.Test.Integration
             cookController = new CookController(timer, display, powerTube);
 
             sut = new UserInterface(powerButton, timeButton, startCancelButton, door, display, light, cookController);
+            cookController.UI = sut;
         }
 
         [Test]
@@ -103,7 +106,8 @@ namespace Microwave.Test.Integration
             {
                 StringBuilder sb = stringWriter.GetStringBuilder();
                 sb.Remove(0, sb.Length);
-                powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+                //powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+                sut.OnPowerPressed(this, EventArgs.Empty);
             }
             Assert.That(stringWriter.ToString().Contains("50"));
         }
@@ -111,26 +115,34 @@ namespace Microwave.Test.Integration
         [Test]
         public void SetPower_CancelButton_DisplayCleared()
         {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
+            sut.OnPowerPressed(this, EventArgs.Empty);
+            sut.OnStartCancelPressed(this, EventArgs.Empty);
             Assert.That(stringWriter.ToString().Contains("cleared"));
         }
 
         [Test]
         public void SetPower_DoorOpened_DisplayCleared()
         {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            //powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            
+            //door.Opened += Raise.EventWith(this, EventArgs.Empty);
 
+            sut.OnPowerPressed(this, EventArgs.Empty);
+            sut.OnDoorOpened(this,EventArgs.Empty);
             Assert.That(stringWriter.ToString().Contains("cleared"));
         }
 
         [Test]
         public void SetPower_DoorOpened_LightOn()
         {
-            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            //powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //door.Opened += Raise.EventWith(this, EventArgs.Empty);
+
+            sut.OnStartCancelPressed(this, EventArgs.Empty);
+            sut.OnDoorOpened(this, EventArgs.Empty);
 
             Assert.That(stringWriter.ToString().Contains("Light is turned on"));
         }
@@ -260,11 +272,13 @@ namespace Microwave.Test.Integration
             // Now in SetTime
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in cooking
+            Thread.Sleep(59000);
             StringBuilder sb = stringWriter.GetStringBuilder();
+            
             sb.Remove(0, sb.Length);
             // Cooking is done
-            sut.CookingIsDone();
-            Assert.That(stringWriter.ToString().Contains("Display cleared"));
+            Thread.Sleep(1100);
+            Assert.That(stringWriter.ToString().Contains("Display cleared") && stringWriter.ToString().Contains("PowerTube turned off") && stringWriter.ToString().Contains("Light is turned off"));
         }
 
         [Test]
@@ -318,7 +332,6 @@ namespace Microwave.Test.Integration
         [Test]
         public void Cooking_CancelButton_LightCalled()
         {
-            
 
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
