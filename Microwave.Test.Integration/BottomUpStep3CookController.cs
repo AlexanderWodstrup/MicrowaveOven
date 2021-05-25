@@ -121,13 +121,13 @@ namespace Microwave.Test.Integration
             Assert.That(stringWriter.ToString().Contains("turned off"));
         }
         [Test]
-        public void Cooking_Stop_AndTimer_PowerTubeOff2()
+        public void Cooking_StopCorrectyly()
         {
             sut.StartCooking(50, 60);
             
             sut.Stop();
             Thread.Sleep(5000);
-            Assert.That(stringWriter.ToString().Contains("turned off"));
+            Assert.That(!stringWriter.ToString().Contains("0:59"));
         }
 
         [TestCase(50, 10)]
